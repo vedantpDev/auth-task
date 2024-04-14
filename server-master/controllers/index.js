@@ -40,7 +40,7 @@ const getGithubUserData = async (req, res) => {
       res.status(400).send({ message: "Something went wrong" });
     }
   } catch (error) {
-    res.status(400).send({ message: error.message });
+    res.status(error.response.status).send({ message: error.message });
   }
 };
 
@@ -69,7 +69,7 @@ const getAccessToken = async (req, res) => {
         res.status(200).send(responseData);
       });
   } catch (error) {
-    res.status(400).send({ message: error.message });
+    res.status(error.response.status).send({ message: error.message });
   }
 };
 
@@ -83,7 +83,7 @@ const getUserData = async (req, res) => {
     });
     res.status(200).json(response.data);
   } catch (error) {
-    res.status(400).send({ message: error.message });
+    res.status(error.response.status).send({ message: error.message });
   }
 };
 

@@ -6,6 +6,7 @@ import { Navbar } from "./components";
 function App() {
   const [searchedValue, setSearchedValue] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isBtDisabled, setIsBtDisabled] = useState(false);
   const [githubUserData, setGithubUserData] = useState({
     avatar_url: "",
     bio: "",
@@ -16,11 +17,11 @@ function App() {
   const searchGitUser = async () => {
     try {
       setLoading(true);
+      setIsBtDisabled(true);
       const response = await axios.post("/getUserGithubData", {
         userName: searchedValue,
       });
       const userGithubData = response;
-      console.log(userGithubData);
       if (userGithubData.status === 200) {
         setGithubUserData({
           avatar_url: userGithubData.data.avatar_url,
@@ -28,18 +29,17 @@ function App() {
           name: userGithubData.data.name,
           sortedReposByWatchers: userGithubData.data.sortedReposByWatchers,
         });
-      } else {
-        setGithubUserData({
-          avatar_url: "",
-          bio: "",
-          name: "",
-          sortedReposByWatchers: [],
-        });
       }
     } catch (error) {
-      alert(error.message);
+      if (error.response.status === 404) {
+        alert("User not found");
+      } else {
+        alert(error.message);
+      }
+      setSearchedValue("");
     }
     setLoading(false);
+    setIsBtDisabled(false);
   };
 
   return (
@@ -64,6 +64,7 @@ function App() {
                   style={{ marginLeft: "10px" }}
                   type="button"
                   onClick={searchGitUser}
+                  disabled={isBtDisabled}
                 >
                   Search
                 </button>

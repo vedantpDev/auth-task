@@ -5,9 +5,11 @@ const ProtectedRoute = ({ Component }) => {
   const navigate = useNavigate();
   useEffect(() => {
     if (
-      !JSON.stringify(localStorage.getItem("firebaseUser")) ||
-      !localStorage.getItem("accessToken")
+      localStorage.getItem("firebaseUser") ||
+      localStorage.getItem("accessToken")
     ) {
+      navigate("/");
+    } else {
       navigate("/sign-up");
     }
   }, []);
