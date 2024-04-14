@@ -32,6 +32,7 @@ const SignUpPage = () => {
           signUpUser.user.displayName = name;
           const loginUserData = signUpUser.user;
           localStorage.setItem("firebaseUser", JSON.stringify(loginUserData));
+          navigate("/sign-in");
         } else {
           alert("password does not match");
         }
